@@ -1,0 +1,469 @@
+/* Custom CSS for Lung Cancer Risk Predictor */
+
+/* Font and General Styling */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  min-height: 100vh;
+  border-right: 1px solid #dee2e6;
+  background-color: #f8f9fa !important;
+}
+
+.sidebar-content {
+  position: sticky;
+  top: 20px;
+}
+
+/* Main Content */
+.main-content {
+  background-color: rgba(255, 255, 255, 0.95);
+  min-height: 100vh;
+}
+
+/* Custom Gradient Backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(45deg, #007bff, #0056b3) !important;
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(45deg, #6c757d, #495057) !important;
+}
+
+.bg-gradient-info {
+  background: linear-gradient(45deg, #17a2b8, #117a8b) !important;
+}
+
+/* Card Enhancements */
+.card {
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header {
+  border-radius: 15px 15px 0 0 !important;
+  border: none;
+}
+
+/* Form Styling */
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Button Groups for Radio Buttons */
+.btn-group .btn {
+  border-radius: 8px !important;
+  margin: 0 2px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-success:checked,
+.btn-check:checked + .btn-outline-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.btn-outline-danger:checked,
+.btn-check:checked + .btn-outline-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+/* Range Slider Styling */
+.form-range {
+  height: 8px;
+}
+
+.form-range::-webkit-slider-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #007bff;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+.form-range::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #007bff;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Button Styling */
+.btn {
+  border-radius: 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 10px 25px;
+}
+
+.btn-lg {
+  padding: 15px 35px;
+  font-size: 1.1rem;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar Styling */
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+/* Result Cards */
+.prediction-result {
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.high-risk {
+  background: linear-gradient(45deg, #dc3545, #c82333);
+  color: white;
+}
+
+.low-risk {
+  background: linear-gradient(45deg, #28a745, #1e7e34);
+  color: white;
+}
+
+/* Form Group Styling */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-group small {
+  font-style: italic;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Badge Styling */
+.badge {
+  font-size: 1rem;
+  padding: 8px 15px;
+}
+
+/* Alert Enhancements */
+.alert {
+  border-radius: 10px;
+  border: none;
+}
+
+/* Accordion/Expander Styling */
+.accordion-button {
+  border-radius: 10px !important;
+  font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #e7f3ff;
+  color: #0056b3;
+}
+
+/* Loading Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Past Predictions Styling */
+.past-prediction-item {
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.past-prediction-item:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.past-prediction-header {
+  padding: 15px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.past-prediction-header:hover {
+  background-color: #f8f9fa;
+}
+
+.past-prediction-content {
+  padding: 20px;
+  background-color: #fdfdfd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .main-content {
+    min-height: auto;
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    margin: 2px 0;
+    border-radius: 8px !important;
+  }
+
+  .display-4 {
+    font-size: 2rem;
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Plot Container */
+#plotDiv {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Feedback Section */
+#feedback {
+  border-radius: 10px;
+  resize: vertical;
+}
+
+/* Footer Text */
+.text-center.text-muted {
+  margin-top: 3rem;
+  padding: 2rem 0;
+}
+
+/* Success/Error Messages */
+.alert-success {
+  background: linear-gradient(45deg, #d4edda, #c3e6cb);
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.alert-danger {
+  background: linear-gradient(45deg, #f8d7da, #f5c6cb);
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+/* Custom Download Button */
+.download-btn {
+  background: linear-gradient(45deg, #007bff, #0056b3);
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+/* Footer Styling */
+footer {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: #ecf0f1;
+  border-radius: 15px 15px 0 0;
+  margin-top: 3rem;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+  padding: 3rem 2rem 2rem;
+}
+
+footer h5,
+footer h6 {
+  color: #3498db;
+  font-weight: 600;
+}
+
+footer .text-muted {
+  color: #bdc3c7 !important;
+}
+
+footer a.text-muted:hover {
+  color: #3498db !important;
+  text-decoration: none;
+  transform: translateX(5px);
+  transition: all 0.3s ease;
+}
+
+footer .fab,
+footer .fas {
+  transition: all 0.3s ease;
+}
+
+footer .fab:hover,
+footer .fas:hover {
+  transform: scale(1.2);
+  color: #3498db;
+}
+
+footer hr {
+  border-color: #34495e;
+  opacity: 0.3;
+}
+
+footer .badge {
+  font-size: 0.8rem;
+  padding: 0.5rem 0.8rem;
+}
+
+footer .border-top {
+  border-color: #34495e !important;
+}
+
+footer .text-primary {
+  color: #3498db !important;
+}
+
+/* Footer Animation */
+footer {
+  animation: slideInUp 0.8s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Footer Links Hover Effect */
+footer ul li a {
+  position: relative;
+  overflow: hidden;
+}
+
+footer ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3498db;
+  transition: width 0.3s ease;
+}
+
+footer ul li a:hover::after {
+  width: 100%;
+}
+
+/* Social Media Icons */
+footer .d-flex a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(52, 152, 219, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+footer .d-flex a:hover {
+  background: rgba(52, 152, 219, 0.2);
+  transform: translateY(-3px);
+}

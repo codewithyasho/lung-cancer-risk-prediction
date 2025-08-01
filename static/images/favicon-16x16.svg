@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <rect width="16" height="16" fill="#4682b4" rx="2"/>
+  <g fill="#ffffff">
+    <!-- Medical cross -->
+    <rect x="6" y="2" width="4" height="12" rx="1"/>
+    <rect x="2" y="6" width="12" height="4" rx="1"/>
+    <!-- Small pulse line -->
+    <circle cx="4" cy="4" r="0.5" opacity="0.8"/>
+    <circle cx="12" cy="12" r="0.5" opacity="0.8"/>
+  </g>
+</svg>

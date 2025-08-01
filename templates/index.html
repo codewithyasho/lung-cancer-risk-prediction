@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lung Cancer Risk Prediction</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon-16x16.svg') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-lungs me-2"></i>
+          Lung Cancer Risk Predictor
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-md-4 bg-light sidebar">
+          <div class="sidebar-content p-4">
+            <div class="mb-4">
+              <h5><i class="fas fa-info-circle me-2"></i>About</h5>
+              <p class="text-muted small">
+                This app uses a Machine Learning model to predict the risk of
+                lung cancer based on medical and lifestyle inputs.
+              </p>
+            </div>
+
+            <div class="mb-4">
+              <h5><i class="fas fa-envelope me-2"></i>Contact</h5>
+              <p class="text-muted small">
+                Questions? Email: <br /><code
+                  >yashodeephundiwale@gmail.com</code
+                >
+              </p>
+            </div>
+
+            <div class="alert alert-warning">
+              <h6>
+                <i class="fas fa-exclamation-triangle me-2"></i>Disclaimer
+              </h6>
+              <p class="small mb-0">
+                This app is for informational purposes only and should not be
+                used as a substitute for professional medical advice.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-9 col-md-8 main-content">
+          <div class="container py-4">
+            <!-- Header -->
+            <div class="text-center mb-5">
+              <h1 class="display-4 fw-bold text-primary">
+                <i class="fas fa-lungs me-3"></i>
+                Lung Cancer Risk Prediction
+              </h1>
+              <p class="lead text-muted">
+                Advanced AI-powered health assessment tool
+              </p>
+            </div>
+
+            <!-- Prediction Form -->
+            <div class="card shadow-lg border-0 mb-5">
+              <div class="card-header bg-gradient-primary text-white">
+                <h4 class="mb-0">
+                  <i class="fas fa-user-md me-2"></i>Health Assessment Form
+                </h4>
+              </div>
+              <div class="card-body p-4">
+                <form id="predictionForm">
+                  <!-- Personal Information -->
+                  <div class="row mb-4">
+                    <div class="col-md-12">
+                      <label for="full_name" class="form-label fw-semibold"
+                        >Full Name</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        id="full_name"
+                        name="full_name"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-4">
+                    <div class="col-md-6">
+                      <label for="age" class="form-label fw-semibold"
+                        >Age (उम्र)</label
+                      >
+                      <input
+                        type="range"
+                        class="form-range"
+                        id="age"
+                        name="age"
+                        min="1"
+                        max="100"
+                        value="25"
+                        oninput="document.getElementById('ageValue').textContent = this.value"
+                      />
+                      <div class="text-center">
+                        <span class="badge bg-primary" id="ageValue">25</span>
+                        years old
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="gender" class="form-label fw-semibold"
+                        >Gender (लिंग)</label
+                      >
+                      <select
+                        class="form-select form-select-lg"
+                        id="gender"
+                        name="gender"
+                        required
+                      >
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Medical Questions -->
+                  <h5 class="text-primary mb-3">
+                    <i class="fas fa-stethoscope me-2"></i>Medical Information
+                  </h5>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold"
+                          >Do you smoke? (क्या आप धूम्रपान करते हैं?)</label
+                        >
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="smoking"
+                            id="smoking_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="smoking_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="smoking"
+                            id="smoking_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="smoking_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Smoking is a major risk factor for lung
+                          diseases.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold"
+                          >Yellow fingers?</label
+                        >
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="yellow_fingers"
+                            id="yellow_fingers_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="yellow_fingers_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="yellow_fingers"
+                            id="yellow_fingers_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="yellow_fingers_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Yellowing may indicate long-term tobacco use.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold">Anxiety? (चिंता?)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="anxiety"
+                            id="anxiety_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="anxiety_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="anxiety"
+                            id="anxiety_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="anxiety_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Mental health can indirectly impact physical
+                          health.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold"
+                          >Chronic disease? (पुरानी बीमारी?)</label
+                        >
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="chronic_disease"
+                            id="chronic_disease_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="chronic_disease_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="chronic_disease"
+                            id="chronic_disease_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="chronic_disease_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Includes diabetes, hypertension, etc.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold">Fatigue? (थकान?)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="fatigue"
+                            id="fatigue_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="fatigue_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="fatigue"
+                            id="fatigue_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="fatigue_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Feeling constantly tired or low in energy.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold">Allergy?</label>
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="allergy"
+                            id="allergy_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="allergy_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="allergy"
+                            id="allergy_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="allergy_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Any persistent allergic reactions or
+                          sensitivities.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold">Wheezing? (सांस में घरघराहट?)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="wheezing"
+                            id="wheezing_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="wheezing_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="wheezing"
+                            id="wheezing_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="wheezing_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Whistling sound during breathing.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold"
+                          >Alcohol consumption? (शराब का सेवन?)</label
+                        >
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="alcohol_consuming"
+                            id="alcohol_consuming_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="alcohol_consuming_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="alcohol_consuming"
+                            id="alcohol_consuming_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="alcohol_consuming_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Regular alcohol intake?</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold">Coughing? (खांसी?)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="coughing"
+                            id="coughing_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="coughing_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="coughing"
+                            id="coughing_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="coughing_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Frequent or chronic coughing?</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold"
+                          >Shortness of breath? (सांस लेने में तकलीफ?)</label
+                        >
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="shortness_of_breath"
+                            id="shortness_of_breath_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="shortness_of_breath_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="shortness_of_breath"
+                            id="shortness_of_breath_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="shortness_of_breath_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Difficulty breathing or catching breath.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold"
+                          >Swallowing difficulty? (निगलने में कठिनाई?)</label
+                        >
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="swallowing_difficulty"
+                            id="swallowing_difficulty_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="swallowing_difficulty_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="swallowing_difficulty"
+                            id="swallowing_difficulty_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="swallowing_difficulty_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Pain or discomfort when swallowing.</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold"
+                          >Chest pain? (छाती में दर्द?)</label
+                        >
+                        <div class="btn-group w-100" role="group">
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="chest_pain"
+                            id="chest_pain_yes"
+                            value="YES"
+                          />
+                          <label
+                            class="btn btn-outline-danger"
+                            for="chest_pain_yes"
+                            >Yes</label
+                          >
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="chest_pain"
+                            id="chest_pain_no"
+                            value="NO"
+                            checked
+                          />
+                          <label
+                            class="btn btn-outline-success"
+                            for="chest_pain_no"
+                            >No</label
+                          >
+                        </div>
+                        <small class="text-muted"
+                          >Any sharp, dull, or persistent pain in the chest
+                          area.</small
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Consent -->
+                  <div class="mt-4">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="consent"
+                        required
+                      />
+                      <label class="form-check-label fw-semibold" for="consent">
+                        I agree to the disclaimer and understand this is not a
+                        medical diagnosis.
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                      <i class="fas fa-search me-2"></i>
+                      Predict Risk
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="d-none">
+              <div class="card shadow-lg border-0 mb-4">
+                <div class="card-body text-center p-5">
+                  <div id="predictionResult" class="mb-4"></div>
+                  <div id="plotDiv" class="mb-4"></div>
+                  <button id="downloadBtn" class="btn btn-success btn-lg">
+                    <i class="fas fa-download me-2"></i>
+                    Download Report
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Past Predictions -->
+            <div id="pastPredictionsSection" class="d-none">
+              <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header bg-gradient-secondary text-white">
+                  <h4 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Past Predictions
+                  </h4>
+                </div>
+                <div class="card-body" id="pastPredictionsContent">
+                  <!-- Past predictions will be loaded here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-5 pt-5">
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <h5 class="text-primary">
+                    <i class="fas fa-heartbeat me-2"></i>Health Prediction AI
+                  </h5>
+                  <p class="text-muted">
+                    Advanced machine learning technology for early health risk
+                    assessment and prevention.
+                  </p>
+                  <div class="d-flex gap-3">
+                    <a href="#" class="text-muted"
+                      ><i class="fab fa-twitter fa-lg"></i
+                    ></a>
+                    <a href="#" class="text-muted"
+                      ><i class="fab fa-linkedin fa-lg"></i
+                    ></a>
+                    <a href="#" class="text-muted"
+                      ><i class="fab fa-github fa-lg"></i
+                    ></a>
+                  </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                  <h6 class="text-primary mb-3">Contact Information</h6>
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-envelope text-primary me-3"></i>
+                    <span class="text-muted">yashodeephundiwale@gmail.com</span>
+                  </div>
+                  
+                  <div class="d-flex align-items-center">
+                    <i class="fas fa-code text-primary me-3"></i>
+                    <span class="text-muted">Powered by Machine Learning</span>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4" />
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <p class="text-muted mb-0">
+                    <i class="fas fa-lock me-2"></i>
+                    © 2025 Lung Cancer Risk Predictor. All data processed
+                    locally and securely.
+                  </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                  <div class="d-flex justify-content-md-end align-items-center">
+                    <span class="badge bg-success me-2">
+                      <i class="fas fa-shield-alt me-1"></i>
+                      HIPAA Compliant
+                    </span>
+                    <span class="badge bg-primary">
+                      <i class="fas fa-robot me-1"></i>
+                      AI Powered
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-4 pt-3 border-top">
+                <small class="text-muted">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  <strong>Medical Disclaimer:</strong> This tool is for
+                  educational purposes only. Always consult with qualified
+                  healthcare professionals for medical advice.
+                </small>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
