@@ -3,19 +3,13 @@ import pandas as pd
 import joblib
 import json
 from fpdf import FPDF
-import base64
 from datetime import datetime
 import plotly.graph_objects as go
 import plotly.utils
 import tempfile
-import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', '7e3f56b922cd0c328693556e07fbfa8354e41345e75b6676896808d01d8b7ece')
+
 
 # Load the ML model and expected columns
 model = joblib.load('RFC.pkl')
@@ -223,7 +217,5 @@ def get_past_predictions():
 
 
 if __name__ == '__main__':
-    # Development server (use gunicorn for production)
-    app.run(debug=True, host="0.0.0.0")
-    
-    
+    app.run(debug=True, host='0.0.0.0')
+
